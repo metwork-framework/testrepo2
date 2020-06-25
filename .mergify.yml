@@ -10,6 +10,7 @@ pull_request_rules:
         add: ["Status: Merged"]
         remove: ["Status: Revision Needed", "Status: Pending", "Status: Review Needed", "Status: Accepted", "Status: Blocked", "Status: In Progress", "Status: NotReproduced", "Status: Merge Now"]
     conditions:
+      - base!=master
       - -merged
       - -closed
       - "#approved-reviews-by>=1"
@@ -21,6 +22,7 @@ pull_request_rules:
         type: APPROVE
         message: "automatic approve because author=metworkbot"
     conditions:
+      - base!=master
       - -merged
       - -closed
       - author=metworkbot
@@ -32,6 +34,7 @@ pull_request_rules:
         type: APPROVE
         message: "automatic approve because label=Status: Merge Now"
     conditions:
+      - base!=master
       - -merged
       - -closed
       - -title~=(WIP|wip)
@@ -42,16 +45,30 @@ pull_request_rules:
         add: ["Status: In Progress"]
         remove: ["Status: Revision Needed", "Status: Pending", "Status: Review Needed", "Status: Accepted", "Status: Blocked", "Status: NotReproduced", "Status: Merged", "Status: Merge Now"]
     conditions:
+      - base!=master
+      - -merged
+      - -closed
+      - title~=(WIP|wip)
+      - "label!=Status: Blocked"
+  - name: review needed
+    actions:
+      label:
+        add: ["Status: Review Needed"]
+        remove: ["Status: Revision Needed", "Status: Pending", "Status: In Progress", "Status: Accepted", "Status: Blocked", "Status: NotReproduced", "Status: Merged", "Status: Merge Now"]
+    conditions:
+      - base!=master
       - -merged
       - -closed
       - -title~=(WIP|wip)
       - "label!=Status: Blocked"
+      - "#approved-reviews-by=0"
   - name: revision needed1
     actions:
       label:
         add: ["Status: Revision Needed"]
         remove: ["Status: In Progress", "Status: Pending", "Status: Review Needed", "Status: Accepted", "Status: Blocked", "Status: NotReproduced", "Status: Merged", "Status: Merge Now"]
     conditions:
+      - base!=master
       - -merged
       - -closed
       - "#changes-requested-reviews-by>=1"
@@ -62,6 +79,7 @@ pull_request_rules:
         add: ["Status: Revision Needed"]
         remove: ["Status: In Progress", "Status: Pending", "Status: Review Needed", "Status: Accepted", "Status: Blocked", "Status: NotReproduced", "Status: Merged", "Status: Merge Now"]
     conditions:
+      - base!=master
       - -merged
       - -closed
       - conflict
