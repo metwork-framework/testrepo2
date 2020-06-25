@@ -35,7 +35,7 @@ pull_request_rules:
       - -merged
       - -closed
       - -title~=(WIP|wip)
-      - "label!=Status: Merge Now"
+      - "label=Status: Merge Now"
   - name: wip
     actions:
       label:
