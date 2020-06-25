@@ -14,7 +14,7 @@ pull_request_rules:
       - -closed
       - "#approved-reviews-by>=1"
       - -title~=(WIP|wip)
-      - label!="Status: Blocked"
+      - "label!=Status: Blocked"
   - name: buildbot auto merges
     actions:
       review:
