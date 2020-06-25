@@ -25,7 +25,7 @@ pull_request_rules:
       - -closed
       - author=metworkbot
       - -title~=(WIP|wip)
-      - label!="Status: Blocked"
+      - "label!=Status: Blocked"
   - name: mergenow auto merges
     actions:
       review:
@@ -35,7 +35,7 @@ pull_request_rules:
       - -merged
       - -closed
       - -title~=(WIP|wip)
-      - label!="Status: Merge Now"
+      - "label!=Status: Merge Now"
   - name: wip
     actions:
       label:
@@ -45,7 +45,7 @@ pull_request_rules:
       - -merged
       - -closed
       - -title~=(WIP|wip)
-      - label!="Status: Blocked"
+      - "label!=Status: Blocked"
   - name: revision needed1
     actions:
       label:
@@ -55,7 +55,7 @@ pull_request_rules:
       - -merged
       - -closed
       - "#changes-requested-reviews-by>=1"
-      - label!="Status: Blocked"
+      - "label!=Status: Blocked"
   - name: revision needed2
     actions:
       label:
@@ -65,7 +65,7 @@ pull_request_rules:
       - -merged
       - -closed
       - conflicts
-      - label!="Status: Blocked"
+      - "label!=Status: Blocked"
   - name: master branch
     actions:
       comment:
