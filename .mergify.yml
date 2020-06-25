@@ -15,14 +15,9 @@ pull_request_rules:
       - "#approved-reviews-by>=1"
   - name: buildbot auto merges
     actions:
-      merge:
-        method: squash
-        strict: true
-        commit_message: title+body
-      delete_head_branch: {}
-      label:
-        add: ["Status: Merged"]
-        remove: ["Status: Revision Needed", "Status: Pending", "Status: Review Needed", "Status: Accepted", "Status: Blocked", "Status: In Progress", "Status: NotReproduced"]
+      review:
+        type: APPROVE
+        message: "automatic approve because author=metworkbot"
     conditions:
       - -merged
       - -closed
