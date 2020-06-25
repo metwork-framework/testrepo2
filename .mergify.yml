@@ -64,7 +64,7 @@ pull_request_rules:
     conditions:
       - -merged
       - -closed
-      - conflicts
+      - conflict
       - "label!=Status: Blocked"
   - name: master branch
     actions:
