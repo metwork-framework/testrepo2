@@ -8,11 +8,13 @@ pull_request_rules:
       delete_head_branch: {}
       label:
         add: ["Status: Merged"]
-        remove: ["Status: Revision Needed", "Status: Pending", "Status: Review Needed", "Status: Accepted", "Status: Blocked", "Status: In Progress", "Status: NotReproduced"]
+        remove: ["Status: Revision Needed", "Status: Pending", "Status: Review Needed", "Status: Accepted", "Status: Blocked", "Status: In Progress", "Status: NotReproduced", "Status: Merge Now"]
     conditions:
       - -merged
       - -closed
       - "#approved-reviews-by>=1"
+      - -title~=(WIP|wip)
+      - label!=Status: Blocked
   - name: buildbot auto merges
     actions:
       review:
@@ -22,6 +24,48 @@ pull_request_rules:
       - -merged
       - -closed
       - author=metworkbot
+      - -title~=(WIP|wip)
+      - label!=Status: Blocked
+  - name: mergenow auto merges
+    actions:
+      review:
+        type: APPROVE
+        message: "automatic approve because label=Status: Merge Now"
+    conditions:
+      - -merged
+      - -closed
+      - -title~=(WIP|wip)
+      - label!=Status: Merge Now
+  - name: wip
+    actions:
+      label:
+        add: ["Status: In Progress"]
+        remove: ["Status: Revision Needed", "Status: Pending", "Status: Review Needed", "Status: Accepted", "Status: Blocked", "Status: NotReproduced", "Status: Merged", "Status: Merge Now"]
+    conditions:
+      - -merged
+      - -closed
+      - -title~=(WIP|wip)
+      - label!=Status: Blocked
+  - name: revision needed1
+    actions:
+      label:
+        add: ["Status: Revision Needed"]
+        remove: ["Status: In Progress", "Status: Pending", "Status: Review Needed", "Status: Accepted", "Status: Blocked", "Status: NotReproduced", "Status: Merged", "Status: Merge Now"]
+    conditions:
+      - -merged
+      - -closed
+      - "#changes-requested-reviews-by>=1"
+      - label!=Status: Blocked
+  - name: revision needed2
+    actions:
+      label:
+        add: ["Status: Revision Needed"]
+        remove: ["Status: In Progress", "Status: Pending", "Status: Review Needed", "Status: Accepted", "Status: Blocked", "Status: NotReproduced", "Status: Merged", "Status: Merge Now"]
+    conditions:
+      - -merged
+      - -closed
+      - conflicts
+      - label!=Status: Blocked
   - name: master branch
     actions:
       comment:
@@ -39,7 +83,7 @@ pull_request_rules:
            Many thanks!
       label:
         add: ["Status: Revision Needed"]
-        remove: ["Status: Pending", "Status: Review Needed", "Status: Accepted", "Status: Blocked", "Status: Closed", "Status: In Progress", "Status: NotReproduced"]
+        remove: ["Status: Pending", "Status: Review Needed", "Status: Accepted", "Status: Blocked", "Status: Closed", "Status: In Progress", "Status: NotReproduced", "Status: Merge Now"]
     conditions:
       - base=master
       - -closed
