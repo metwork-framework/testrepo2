@@ -16,8 +16,29 @@ pull_request_rules:
       - "#approved-reviews-by>=1"
       - -title~=(WIP|wip)
       - "label!=Status: Blocked"
+      - "label~=^Type: "
+  - name: missing type
+    actions:
+      comment:
+        message: |
+          To merge this pull-request, just tag this PR with a label:
+          
+          - `Type: Enhancement` (new feature) 
+          - (or) `Type: Bug` (bugfix)
+          - (or) `Type: Maintenance` (not on the changelog)
+    conditions:
+      - base!=master
+      - -merged
+      - -closed
+      - "#approved-reviews-by>=1"
+      - -title~=(WIP|wip)
+      - "label!=Status: Blocked"
+      - -"label~=^Type: "     
   - name: buildbot auto merges
     actions:
+      label:
+        add: ["Type: Maintenance"]
+        remove: ["Type: Question", "Type: Enhancement", "Type: Bug"]
       review:
         type: APPROVE
         message: "automatic approve because author=metworkbot"
